@@ -1,3 +1,6 @@
+"""
+Define fields, validate_dataclass, _asdictenhanced_inner, update_frozen
+"""
 import copy
 from dataclasses import (
 	fields,
