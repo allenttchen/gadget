@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+function utilities for pytorch
+"""
 
 import torch
 import torch.nn as nn
