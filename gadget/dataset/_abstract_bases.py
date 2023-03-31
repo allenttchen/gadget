@@ -2,23 +2,27 @@ import abc
 from typing import Callable
 from dataclasses import dataclass
 
-from ../utils/dataclasses import field
+from ..utils.dataclasses import field
+
 
 class AbstractDatasetTransformer(abc.ABC):
     
     @abc.abstractmethod
-    def transform(self, dataset):
+    def transform(self, dataset, col="text"):
         pass
     
 
 class DatasetTransformerBase(AbstractDatasetTransformer):
     
     @abc.abstractmethod
-    def _transform(self, df, meta_dict=dict()):
+    def _transform(self, item, meta_dict=dict()):
         pass
     
-    def transform(self, dataset):
-        pass
+    def transform(self, dataset, col="text"):
+        return dataset.apply(
+            lambda x: self._transform(dataset[col]), 
+            axis=1, 
+        )
     
     def __call__(self, dataset):
         return self.transform(dataset)
@@ -35,5 +39,5 @@ class ComponentBase(DatasetTransformerBase):
     def get_function(self):
         pass
     
-    def _transform(self, df, meta_dict=dict()):
-        return self.transform_func(df, **meta_dict)
+    def _transform(self, item, meta_dict=dict()):
+        return self.transform_func(item, **meta_dict)

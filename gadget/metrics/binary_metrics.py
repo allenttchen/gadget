@@ -24,16 +24,16 @@ def binary_classification_metrics_at_threshold(y_true, y_prob, threshold=0.5, po
 	y_label = (y_prob > threshold) * 1
 	# Flip integer label if positive label is 0
 	if pos_label == 0:
-		y_pred = 1 - y_pred
+		y_label = 1 - y_label
 
 	# Calculate metrics and confusion matrix with sklearn
-	precision, recall, f1, _ = precision_recall_fscore_support(y_true, y_pred, pos_label=pos_label, average='binary')
+	precision, recall, f1, _ = precision_recall_fscore_support(y_true, y_label, pos_label=pos_label, average='binary')
 
 	# Confusion Matrix
 	if pos_label == 0:
 		y_true = 1 - y_true
-		y_pred = 1 - y_pred
-	tn, fp, fn, tp = confusion_matrix(y_true, y_pred, labels=[0, 1]).ravel()
+		y_label = 1 - y_label
+	tn, fp, fn, tp = confusion_matrix(y_true, y_label, labels=[0, 1]).ravel()
 
 	# Support: count of pos_label occurences in y_true
 	support = tp + fn
